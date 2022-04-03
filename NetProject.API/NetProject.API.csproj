@@ -12,7 +12,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\NetProject.Application\NetProject.Application.csproj" />
-      <ProjectReference Include="..\NetProject.BuildingBlocks\NetProject.BuildingBlocks.Builder\NetProject.BuildingBlocks.Builder.csproj" />
       <ProjectReference Include="..\NetProject.Infrastructure\NetProject.Infrastructure.csproj" />
     </ItemGroup>
 

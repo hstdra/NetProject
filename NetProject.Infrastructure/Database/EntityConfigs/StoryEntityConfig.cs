@@ -1,15 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NetProject.Domain.StoryAggregate;
-using Newtonsoft.Json;
 
-namespace NetProject.Infrastructure.Database.Configurations;
+namespace NetProject.Infrastructure.Database.EntityConfigs;
 
 public class StoryConfiguration : IEntityTypeConfiguration<Story>
 {
     public void Configure(EntityTypeBuilder<Story> builder)
     {
+        var serializerOptions = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            WriteIndented = true
+        };
         builder.ToTable("stories");
         builder.HasKey(x => x.Id);
 
@@ -18,8 +23,8 @@ public class StoryConfiguration : IEntityTypeConfiguration<Story>
         builder.Property(x => x.CreatorId).HasColumnName("CreatorId");
         builder.Property(x => x.OwnerIds).HasColumnName("OwnerIds")
             .HasConversion(
-                x => JsonConvert.SerializeObject(x),
-                x => JsonConvert.DeserializeObject<List<Guid>>(x),
+                x => JsonSerializer.Serialize(x, serializerOptions),
+                x => JsonSerializer.Deserialize<List<Guid>>(x, serializerOptions),
                 new ValueComparer<List<Guid>>(
                     (c1, c2) => c1.SequenceEqual(c2),
                     c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),

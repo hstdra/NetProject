@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NetProject.Domain.MemberAggregate;
 
-namespace NetProject.Infrastructure.Database.Configurations;
+namespace NetProject.Infrastructure.Database.EntityConfigs;
 
 public class MemberConfiguration : IEntityTypeConfiguration<Member>
 {

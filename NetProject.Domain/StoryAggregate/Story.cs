@@ -4,7 +4,7 @@ namespace NetProject.Domain.StoryAggregate;
 
 public class Story : AggregateRoot<Guid>
 {
-    public string Name { get; private set; }
+    public string Name { get; }
     public Guid CreatorId { get; }
     public List<Guid> OwnerIds { get; }
 

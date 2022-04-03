@@ -3,7 +3,9 @@ using NetProject.Infrastructure.Cqrs.Queries;
 
 namespace NetProject.Application.Queries;
 
-public record GetAllStoriesQuery : IQuery<IEnumerable<Story>>;
+public class GetAllStoriesQuery : IQuery<IEnumerable<Story>>
+{
+}
 
 public class GetAllStoriesQueryHandler : IQueryHandler<GetAllStoriesQuery, IEnumerable<Story>>
 {

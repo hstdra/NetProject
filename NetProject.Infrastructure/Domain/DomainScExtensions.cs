@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Reflection;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetProject.Domain.Core;
 using NetProject.Domain.MemberAggregate;
@@ -10,15 +12,20 @@ namespace NetProject.Infrastructure.Domain;
 
 public static class DomainScExtensions
 {
-    public static IServiceCollection AddDatabase(this IServiceCollection services)
+    public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContextPool<AppDbContext>(options =>
         {
             // options
             //     .UseInMemoryDatabase("NetProject")
             //     .ConfigureWarnings(_ => _.Ignore(InMemoryEventId.TransactionIgnoredWarning));
-            var mySqlConnection = "server=localhost;user=root;password=Abcd123!;database=NetProject;";
-            options.UseMySql(mySqlConnection, ServerVersion.AutoDetect(mySqlConnection));
+
+            var connection = configuration.GetSection("Database:ConnectionString").Value;
+            options.UseMySql(connection, ServerVersion.AutoDetect(connection),
+                x =>
+                {
+                    x.MigrationsAssembly(Assembly.GetExecutingAssembly().FullName);
+                });
         });
 
         services.AddScoped<IUnitOfWork>(sp => new UnitOfWork((sp.GetRequiredService<AppDbContext>())));

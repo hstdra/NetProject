@@ -3,7 +3,11 @@ using NetProject.Infrastructure.Cqrs.Commands;
 
 namespace NetProject.Application.Commands;
 
-public record CreateMemberCommand(string Username, string Name) : ICommand<Guid>;
+public class CreateMemberCommand : ICommand<Guid>
+{
+    public string Username { get; init; }
+    public string Name { get; init; }
+}
 
 public class CreateMemberCommandHandler : ICommandHandler<CreateMemberCommand, Guid>
 {

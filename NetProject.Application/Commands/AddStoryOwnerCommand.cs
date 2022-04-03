@@ -1,11 +1,14 @@
-﻿using NetProject.Domain.Core;
-using NetProject.Domain.MemberAggregate;
+﻿using NetProject.Domain.MemberAggregate;
 using NetProject.Domain.StoryAggregate;
 using NetProject.Infrastructure.Cqrs.Commands;
 
 namespace NetProject.Application.Commands;
 
-public record AddStoryOwnerCommand(Guid StoryId, Guid OwnerId) : ICommand;
+public class AddStoryOwnerCommand : ICommand
+{
+    public Guid StoryId { get; init; }
+    public Guid OwnerId { get; init; }
+}
 
 public class AddStoryOwnerCommandHandler : ICommandHandler<AddStoryOwnerCommand>
 {

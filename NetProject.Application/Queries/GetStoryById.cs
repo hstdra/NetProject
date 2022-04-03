@@ -3,7 +3,10 @@ using NetProject.Infrastructure.Cqrs.Queries;
 
 namespace NetProject.Application.Queries;
 
-public record GetStoryByIdQuery(Guid Id) : IQuery<Story>;
+public class GetStoryByIdQuery : IQuery<Story>
+{
+    public Guid Id { get; init; }
+}
 
 public class GetStoryByIdQueryHandler : IQueryHandler<GetStoryByIdQuery, Story>
 {

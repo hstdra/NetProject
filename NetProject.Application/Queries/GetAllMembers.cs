@@ -3,7 +3,9 @@ using NetProject.Infrastructure.Cqrs.Queries;
 
 namespace NetProject.Application.Queries;
 
-public record GetAllMembersQuery : IQuery<IEnumerable<Member>>;
+public class GetAllMembersQuery : IQuery<IEnumerable<Member>>
+{
+}
 
 public class GetAllMembersQueryHandler : IQueryHandler<GetAllMembersQuery, IEnumerable<Member>>
 {

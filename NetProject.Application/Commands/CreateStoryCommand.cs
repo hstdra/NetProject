@@ -4,7 +4,11 @@ using NetProject.Infrastructure.Cqrs.Commands;
 
 namespace NetProject.Application.Commands;
 
-public record CreateStoryCommand(string Name, Guid CreatorId) : ICommand<Guid>;
+public class CreateStoryCommand : ICommand<Guid>
+{
+    public string Name { get; init; }
+    public Guid CreatorId { get; init; }
+}
 
 public class CreateStoryCommandHandler : ICommandHandler<CreateStoryCommand, Guid>
 {

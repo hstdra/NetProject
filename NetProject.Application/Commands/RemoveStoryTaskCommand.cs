@@ -3,7 +3,11 @@ using NetProject.Infrastructure.Cqrs.Commands;
 
 namespace NetProject.Application.Commands;
 
-public record RemoveStoryTaskCommand(Guid StoryId, Guid StoryTaskId) : ICommand;
+public class RemoveStoryTaskCommand : ICommand
+{
+    public Guid StoryId { get; init; }
+    public Guid StoryTaskId { get; init; }
+}
 
 public class RemoveStoryTaskCommandHandler : ICommandHandler<RemoveStoryTaskCommand>
 {

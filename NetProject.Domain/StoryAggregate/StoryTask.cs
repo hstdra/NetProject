@@ -4,8 +4,8 @@ namespace NetProject.Domain.StoryAggregate;
 
 public class StoryTask : Entity<Guid>
 {
-    public Guid StoryId { get; private set; }
-    public string Name { get; private set; }
+    public Guid StoryId { get; }
+    public string Name { get; }
     public bool IsDone { get; private set; }
 
     public StoryTask(Guid storyId, string name)
