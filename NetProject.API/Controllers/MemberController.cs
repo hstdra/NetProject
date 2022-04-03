@@ -43,7 +43,8 @@ public class MemberController : ControllerBase
     public async Task<IActionResult> CreateMember([FromBody] CreateMemberCommand command, CancellationToken cancellationToken)
     {
         var result = await _commandBus.SendAsync(command, cancellationToken);
-
-        return Ok(new {Id = result});
+        if (!result.IsSuccess) return BadRequest();
+        
+        return Ok(new {Id = result.Response});
     }
 }

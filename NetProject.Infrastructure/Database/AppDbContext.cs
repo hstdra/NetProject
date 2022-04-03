@@ -8,6 +8,7 @@ public sealed class AppDbContext : DbContext
 {
     public DbSet<Member> Members { get; set; }
     public DbSet<Story> Stories { get; set; }
+    public DbSet<StoryTask> StoryTasks { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {

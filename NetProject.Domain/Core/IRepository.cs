@@ -2,7 +2,11 @@
 
 public interface IRepository<TAggregateRoot, in TId> where TAggregateRoot : AggregateRoot<TId>
 {
+    Task<bool> ExistsAsync(TId id, CancellationToken cancellationToken = default);
+
     Task<bool> ExistsAsync(ISpecification<TAggregateRoot> specification, CancellationToken cancellationToken = default);
+
+    Task<TAggregateRoot> FindOneAsync(TId id, CancellationToken cancellationToken = default);
 
     Task<TAggregateRoot> FindOneAsync(ISpecification<TAggregateRoot> specification,
         CancellationToken cancellationToken = default);

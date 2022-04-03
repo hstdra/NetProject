@@ -1,18 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NetProject.Domain.MemberAggregate;
+using NetProject.Domain.StoryAggregate;
 
 namespace NetProject.Infrastructure.Database.Configurations;
 
-public class MemberConfiguration : IEntityTypeConfiguration<Member>
+public class StoryTaskConfiguration : IEntityTypeConfiguration<StoryTask>
 {
-    public void Configure(EntityTypeBuilder<Member> builder)
+    public void Configure(EntityTypeBuilder<StoryTask> builder)
     {
-        builder.ToTable("members");
+        builder.ToTable("storyTasks");
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Id).HasColumnName("Id");
         builder.Property(x => x.Name).HasColumnName("Name");
-        builder.Property(x => x.Username).HasColumnName("Username");
     }
 }

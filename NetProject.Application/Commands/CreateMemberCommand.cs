@@ -14,11 +14,11 @@ public class CreateMemberCommandHandler : ICommandHandler<CreateMemberCommand, G
         _memberRepository = memberRepository;
     }
 
-    public async Task<Guid> Handle(CreateMemberCommand command, CancellationToken cancellationToken)
+    public async Task<CommandResult<Guid>> Handle(CreateMemberCommand command, CancellationToken cancellationToken)
     {
         var member = new Member(command.Name, command.Username);
         await _memberRepository.AddAsync(member, cancellationToken);
 
-        return member.Id;
+        return CommandResult<Guid>.Success(member.Id);
     }
 }

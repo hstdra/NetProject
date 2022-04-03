@@ -1,5 +1,4 @@
-﻿using NetProject.Domain.Core;
-using NetProject.Domain.MemberAggregate;
+﻿using NetProject.Domain.MemberAggregate;
 using NetProject.Infrastructure.Cqrs.Queries;
 
 namespace NetProject.Application.Queries;
@@ -17,7 +16,6 @@ public class GetMemberByIdQueryHandler : IQueryHandler<GetMemberByIdQuery, Membe
 
     public Task<Member> Handle(GetMemberByIdQuery request, CancellationToken cancellationToken)
     {
-        var specification = new SpecificationBase<Member>(x => request.Id == x.Id);
-        return _memberRepository.FindOneAsync(specification, cancellationToken);
+        return _memberRepository.FindOneAsync(request.Id, cancellationToken);
     }
 }

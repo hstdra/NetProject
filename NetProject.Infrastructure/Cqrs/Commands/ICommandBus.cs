@@ -2,5 +2,6 @@
 
 public interface ICommandBus
 {
-    Task<TResponse> SendAsync<TResponse>(ICommand<TResponse> query, CancellationToken cancellationToken = default);
+    Task<CommandResult> SendAsync(ICommand command, CancellationToken cancellationToken = default);
+    Task<CommandResult<TResponse>> SendAsync<TResponse>(ICommand<TResponse> command, CancellationToken cancellationToken = default);
 }

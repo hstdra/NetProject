@@ -13,39 +13,46 @@ public abstract class RepositoryBase<TAggregateRoot, TId> : IRepository<TAggrega
         DbContext = context ?? throw new ArgumentNullException(nameof(context));
     }
 
+    public Task<bool> ExistsAsync(TId id, CancellationToken cancellationToken = default)
+    {
+        return DbContext.Set<TAggregateRoot>().AnyAsync(x => x.Id.Equals(id), cancellationToken);
+    }
+
     public Task<bool> ExistsAsync(ISpecification<TAggregateRoot> specification,
         CancellationToken cancellationToken = default)
     {
         return DbContext.Set<TAggregateRoot>().AnyAsync(specification.Expression, cancellationToken);
     }
 
+    public Task<TAggregateRoot> FindOneAsync(TId id, CancellationToken cancellationToken = default)
+    {
+        return DbContext.Set<TAggregateRoot>().FirstOrDefaultAsync(x => x.Id.Equals(id), cancellationToken);
+    }
+
     public Task<TAggregateRoot> FindOneAsync(ISpecification<TAggregateRoot> specification,
         CancellationToken cancellationToken = default)
     {
-        return DbContext.Set<TAggregateRoot>().FirstOrDefaultAsync(specification.Expression, cancellationToken);
+        if (specification == null) return Task.FromResult(default(TAggregateRoot));
+        var queryable = DbContext.Set<TAggregateRoot>().AsQueryable();
+        var queryableWithInclude = specification.Includes
+            .Aggregate(queryable, (current, include) => current.Include(include));
+
+        return queryableWithInclude.FirstOrDefaultAsync(specification.Expression, cancellationToken);
     }
 
     public Task<IEnumerable<TAggregateRoot>> FindAllAsync(ISpecification<TAggregateRoot> specification,
         CancellationToken cancellationToken = default)
     {
         var queryable = DbContext.Set<TAggregateRoot>().AsQueryable();
-        if (specification == null)
-        {
-            var result = queryable
-                .AsNoTracking()
-                .AsEnumerable();
-            return Task.FromResult(result);
-        }
-        else
-        {
-            var queryableWithInclude = specification.Includes
-                .Aggregate(queryable, (current, include) => current.Include(include));
-            var result = queryableWithInclude
-                .Where(specification.Expression)
-                .AsNoTracking()
-                .AsEnumerable();
-            return Task.FromResult(result);
-        }
+        if (specification == null) return Task.FromResult(queryable.AsNoTracking().AsEnumerable());
+
+        var queryableWithInclude = specification.Includes
+            .Aggregate(queryable, (current, include) => current.Include(include));
+        var result = queryableWithInclude
+            .Where(specification.Expression)
+            .AsNoTracking()
+            .AsEnumerable();
+        return Task.FromResult(result);
     }
 
     public async Task AddAsync(TAggregateRoot aggregate, CancellationToken cancellationToken = default)

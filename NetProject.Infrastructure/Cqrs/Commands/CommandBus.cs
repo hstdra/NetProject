@@ -15,9 +15,14 @@ public class CommandBus : ICommandBus
         _mediator = serviceProvider.GetRequiredService<IMediator>();
     }
 
-    public Task<TResponse> SendAsync<TResponse>(ICommand<TResponse> query,
-        CancellationToken cancellationToken = default)
+    public Task<CommandResult> SendAsync(ICommand command, CancellationToken cancellationToken)
     {
-        return _unitOfWork.ExecuteAsync(() => _mediator.Send(query, cancellationToken), cancellationToken);
+        return _unitOfWork.ExecuteAsync(() => _mediator.Send(command, cancellationToken), cancellationToken);
+    }
+
+    public Task<CommandResult<TResponse>> SendAsync<TResponse>(ICommand<TResponse> command,
+        CancellationToken cancellationToken)
+    {
+        return _unitOfWork.ExecuteAsync(() => _mediator.Send(command, cancellationToken), cancellationToken);
     }
 }

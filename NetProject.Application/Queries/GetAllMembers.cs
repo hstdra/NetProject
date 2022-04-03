@@ -1,5 +1,4 @@
-﻿using NetProject.Domain.Core;
-using NetProject.Domain.MemberAggregate;
+﻿using NetProject.Domain.MemberAggregate;
 using NetProject.Infrastructure.Cqrs.Queries;
 
 namespace NetProject.Application.Queries;
@@ -17,7 +16,6 @@ public class GetAllMembersQueryHandler : IQueryHandler<GetAllMembersQuery, IEnum
 
     public Task<IEnumerable<Member>> Handle(GetAllMembersQuery request, CancellationToken cancellationToken)
     {
-        var specification = new SpecificationBase<Member>(x => true);
-        return _memberRepository.FindAllAsync(specification, cancellationToken);
+        return _memberRepository.FindAllAsync(null, cancellationToken);
     }
 }
