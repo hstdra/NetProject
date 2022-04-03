@@ -1,0 +1,72 @@
+@url = https://localhost:7120
+
+# @name createMember
+POST {{url}}/members
+content-type: application/json
+
+{
+   "name": "John Doe",
+   "username": "jdoe"
+}
+###
+@memberId = {{createMember.response.body.id}}
+
+# @name getLastMember
+GET {{url}}/members/{{memberId}}
+###
+
+# @name getMembers
+GET {{url}}/members
+###
+
+# @name createStory
+POST {{url}}/stories
+content-type: application/json
+
+{
+  "name": "Story 1",
+  "creatorId": "{{memberId}}"
+}
+###
+@storyId = {{createStory.response.body.id}}
+
+# @name getLastStory
+GET {{url}}/stories/{{storyId}}
+###
+@ownerId = {{getLastStory.response.body.ownerIds[:0]}}
+@taskId = {{getLastStory.response.body.storyTasks[:0].id}}
+
+# @name addOwnerToStory
+POST {{url}}/stories/{{storyId}}/owners
+content-type: application/json
+
+{
+  "ownerId": "{{memberId}}"
+}
+###
+
+# @name removeOwnerFromStory
+DELETE  {{url}}/stories/{{storyId}}/owners/{{ownerId}}
+###
+
+# @name addTaskToStory
+POST {{url}}/stories/{{storyId}}/tasks
+content-type: application/json
+
+{
+  "string": "Task 1"
+}
+###
+
+# @name updateTaskIsDone
+PATCH  {{url}}/stories/{{storyId}}/tasks/{{taskId}}/is-done
+content-type: application/json
+
+{
+  "isDone": true
+}
+###
+
+# @name deleteTask
+DELETE   {{url}}/stories/{{storyId}}/tasks/{{taskId}}
+###
