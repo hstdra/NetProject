@@ -54,7 +54,7 @@ POST {{url}}/stories/{{storyId}}/tasks
 content-type: application/json
 
 {
-  "string": "Task 1"
+  "name": "Task 1"
 }
 ###
 

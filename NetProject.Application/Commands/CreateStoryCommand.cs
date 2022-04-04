@@ -24,7 +24,7 @@ public class CreateStoryCommandHandler : ICommandHandler<CreateStoryCommand, Gui
     public async Task<CommandResult<Guid>> Handle(CreateStoryCommand command, CancellationToken cancellationToken)
     {
         var validCreatorId = await _memberRepository.ExistsAsync(command.CreatorId, cancellationToken);
-        if (!validCreatorId) throw new ArgumentException($"Creator with id {command.CreatorId} does not exist");
+        if (!validCreatorId) return CommandResult<Guid>.Error(".....");
 
         var story = new Story(command.Name, command.CreatorId);
         await _storyRepository.AddAsync(story, cancellationToken);

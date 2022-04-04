@@ -11,12 +11,12 @@ public class CommandResult
 
     public static CommandResult Success()
     {
-        return new CommandResult {IsSuccess = true};
+        return new CommandResult { IsSuccess = true };
     }
 
     public static CommandResult Error(string message = null)
     {
-        return new CommandResult {Message = message};
+        return new CommandResult { Message = message };
     }
 }
 
@@ -26,6 +26,11 @@ public class CommandResult<TResponse> : CommandResult
 
     public static CommandResult<TResponse> Success(TResponse response)
     {
-        return new CommandResult<TResponse> {IsSuccess = true, Response = response};
+        return new CommandResult<TResponse> { IsSuccess = true, Response = response };
+    }
+
+    public static CommandResult<TResponse> Error(string message = null)
+    {
+        return new CommandResult<TResponse> { Message = message };
     }
 }
