@@ -8,13 +8,13 @@ public class StoryTask : Entity<Guid>
     public string Name { get; }
     public bool IsDone { get; private set; }
 
-    public StoryTask(Guid storyId, string name)
+    internal StoryTask(Guid storyId, string name)
     {
         StoryId = storyId;
         Name = name;
     }
 
-    public void ChangeIsDone(bool isDone)
+    internal void ChangeIsDone(bool isDone)
     {
         IsDone = isDone;
     }

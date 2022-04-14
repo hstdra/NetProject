@@ -39,4 +39,10 @@ public class Story : AggregateRoot<Guid>
         var current = StoryTasks.FirstOrDefault(x => x.Id == storyTaskId);
         StoryTasks.Remove(current);
     }
+    
+    public void ChangeStoryTaskIsDone(Guid storyTaskId, bool isDone)
+    {
+        var current = StoryTasks.FirstOrDefault(x => x.Id == storyTaskId);
+        current?.ChangeIsDone(isDone);
+    }
 }

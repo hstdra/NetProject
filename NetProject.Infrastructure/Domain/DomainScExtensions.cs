@@ -14,19 +14,17 @@ public static class DomainScExtensions
 {
     public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContextPool<AppDbContext>(options =>
-        {
-            // options
-            //     .UseInMemoryDatabase("NetProject")
-            //     .ConfigureWarnings(_ => _.Ignore(InMemoryEventId.TransactionIgnoredWarning));
+        services
+            .AddDbContextPool<AppDbContext>(options =>
+            {
+                // options
+                //     .UseInMemoryDatabase("NetProject")
+                //     .ConfigureWarnings(_ => _.Ignore(InMemoryEventId.TransactionIgnoredWarning));
 
-            var connection = configuration.GetSection("Database:ConnectionString").Value;
-            options.UseMySql(connection, ServerVersion.AutoDetect(connection),
-                x =>
-                {
-                    x.MigrationsAssembly(Assembly.GetExecutingAssembly().FullName);
-                });
-        });
+                var connection = configuration.GetSection("Database:ConnectionString").Value;
+                options.UseMySql(connection, ServerVersion.AutoDetect(connection),
+                    x => { x.MigrationsAssembly(Assembly.GetExecutingAssembly().FullName); });
+            }, 128);
 
         services.AddScoped<IUnitOfWork>(sp => new UnitOfWork((sp.GetRequiredService<AppDbContext>())));
         services.AddScoped<IMemberRepository, MemberRepository>();

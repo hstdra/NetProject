@@ -27,7 +27,7 @@ public class ChangeStoryTaskIsDoneCommandHandler : ICommandHandler<ChangeStoryTa
         var task = story.StoryTasks.FirstOrDefault(x => x.Id == command.TaskId);
         if (task is null) return CommandResult.Error($"Task with id {command.TaskId} does not exist");
         
-        task.ChangeIsDone(command.IsDone);
+        story.ChangeStoryTaskIsDone(command.TaskId, command.IsDone);
         await _storyRepository.SaveAsync(story, cancellationToken);
 
         return CommandResult.Success();
